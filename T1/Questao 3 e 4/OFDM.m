@@ -24,9 +24,9 @@ function s = paralelo_serial(paralelo)
 end
 
 %Questao 2
-function [y] = canal(x,h)
+function [y] = canal(x,h,snr)
     convolucao = filter(h,1,x); %convolucao
-    y = convolucao;
+    y = awgn(convolucao,snr,'measured');
 end
 
 function [X_k] = receptor(x,h,N,mi)

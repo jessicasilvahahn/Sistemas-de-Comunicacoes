@@ -11,22 +11,24 @@ M = 2;
 info = randint(1,n,M);
 %bpsk
 bpsk = pskmod(info,M);
-figure()
 scatterplot(bpsk);
 X = bpsk;
 objetoOFDM = OFDM;
 x_n = objetoOFDM.transmissor(X,N,mi);
 for r = 0:SNR
-    x_recebido = awgn(x_n,r,'measured');
-    y = objetoOFDM.canal(x_recebido,h);
+    %passa pelo canal
+    y = objetoOFDM.canal(x_n,h,r);
     X_hat_k = objetoOFDM.receptor(y,h,N,mi);
     %taxa de erro de bit
-    info_recebida = X_hat_k > 0; %pq e bpsk
+    info_recebida = pskdemod(X_hat_k,M); %demodula psk
     [num_x_hat(r+1), taxa(r+1)] = biterr(info,info_recebida);
     Pb_teorico(r+1) = qfunc(sqrt(2.*(10^(r/10))));
 end
 figure();
+semilogy(0:SNR,taxa,'r');
 hold on;
-semilogy(0:SNR,taxa);
-semilogy(0:SNR,Pb_teorico);
+semilogy(0:SNR,Pb_teorico,'g');
 hold off;
+legend('Desempenho simulado','Desempenho teórico');
+xlabel('Eb/N0');
+ylabel('Pb');
