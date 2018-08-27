@@ -1,22 +1,22 @@
 function vetor_funcoes = OFDM
     vetor_funcoes.transmissor = @transmissor;
     vetor_funcoes.receptor = @receptor;
+    vetor_funcoes.canal = @canal;
 end
 
 %Questao1
 function [x_n] = transmissor(X,N,mi)
     if mod(N,1) == 0
-    	col = length(X)/N;
-    	aux = [N,col];
-    	paralelo = serial_paralelo(X,aux);  %serial para parelo dividindo em 4 subcanais com 2 símbolos
-    	inversa = ifft(paralelo,N,1);
-    	pref_ciclico = inversa([(N-mi+1) N],:);
-    	info_prefixo = [pref_ciclico;inversa];
-    	x_n = paralelo_serial(info_prefixo);
-   else
-	x_n = 0
-   end
-
+        col = length(X)/N;
+        aux = [N,col];
+        paralelo = serial_paralelo(X,aux);  %serial para parelo dividindo em 4 subcanais com 2 símbolos
+        inversa = ifft(paralelo,N,1);
+        pref_ciclico = inversa([(N-mi+1):N],:);
+        info_prefixo = [pref_ciclico;inversa];
+        x_n = paralelo_serial(info_prefixo);
+    else
+        x_n = 0
+    end
 end
 
 function [p] = serial_paralelo(serial,aux)
@@ -30,13 +30,12 @@ end
 %Questao 2
 function [y] = canal(x,h,snr)
     convolucao = filter(h,1,x); %convolucao
-    y = awgn(convolucao,snr);
+    y = awgn(convolucao,snr,'measured');
 end
 
-function [X_k] = receptor(x,h,snr,N,mi)
-    y = canal(x,h,snr);
-    col = length(y)/(N+mi);
-    paralelo =  serial_paralelo(y,[(N+mi),col]);
+function [X_k] = receptor(x,h,N,mi)
+    col = length(x)/(N+mi);
+    paralelo =  serial_paralelo(x,[(N+mi),col]);
     %remocao prefixo ciclico
     paralelo([1:mi],:) = [];
     %fft
@@ -49,4 +48,3 @@ function [X_k] = receptor(x,h,snr,N,mi)
     X_k = paralelo_serial(X_hat);
     
 end
-
