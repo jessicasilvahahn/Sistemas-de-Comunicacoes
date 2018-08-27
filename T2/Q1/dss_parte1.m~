@@ -23,10 +23,8 @@ t = 0:Ta:dur-Ta; %tempo
 
 %superamostragem
 filtro = ones(1,up);
-x_t_up = filter(filtro,1, upsample(x_t,up));
-filtro_c = ones(1,amostra_chip);
-c_t_up = filter(filtro_c,1, upsample(c_t,amostra_chip));
-c_t_up = repmat(c_t_up,1,length(x_t_up)/length(c_t_up));
+x_t_up = filter(filtro,1, upsample(x_t,samples_bit));
+c_t_up = repmat(c_t,Nb/L);
 s_t = x_t_up.*c_t_up;
 
 %plot
