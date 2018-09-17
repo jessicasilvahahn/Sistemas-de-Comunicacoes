@@ -32,8 +32,8 @@ psk = s_t.*pt;
 
 %ver melhor vetor de frequencia
 %frequencia
-vetor = [-length(t)/2:length(t)/2-1];
-f = vetor*fa/2;
+passo_f = fa/length(t);
+f = -fa/2:passo_f:(fa/2-1);
 X = fft(x_t_up);
 C = fft(c_t_up);
 S = fft(s_t);
@@ -58,4 +58,19 @@ xlim([0 4*1/up]);
 title('Sinal s_b_p_s_k_(_t_)');
 
 figure();
-plot(f,fftshift(abs(PSK))); 
+subplot(411);
+plot(f,fftshift(abs(X)),'r');
+title('X(f)');
+xlim([-10e4 10e4])
+subplot(412);
+plot(f,fftshift(abs(C)));
+title('C(f)');
+xlim([-10e4 10e4])
+subplot(413);
+plot(f,fftshift(abs(S)),'g');
+title('S(f)');
+xlim([-10e4 10e4])
+subplot(414);
+plot(f,fftshift(abs(PSK)),'k');
+title('S_b_p_s_k_(_f_)');
+xlim([-10e4 10e4])
