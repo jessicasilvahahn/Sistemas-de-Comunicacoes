@@ -40,11 +40,11 @@ subplot(411);
 plot(t(1:tamanho_ofdm),abs(x_up(1:tamanho_ofdm)));
 title('Sinal de Saída do Transmissor no Domínio do Tempo')
 subplot(412);
-plot(t(1:tamanho_ofdm),abs(y_up(1:tamanho_ofdm)));
-title('Sinal de Saída do Canal no Domínio do Tempo')
-subplot(413);
 plot(f,10*log10(fftshift(abs(X_n))));
 title('Sinal de Saída do Transmissor no Domínio da Frequência')
+subplot(413);
+plot(t(1:tamanho_ofdm),abs(y_up(1:tamanho_ofdm)));
+title('Sinal de Saída do Canal no Domínio do Tempo')
 subplot(414);
 plot(f,10*log10(fftshift(abs(Y)))); %para ficar em DB
 title('Sinal de Saída do Canal no Domínio da Frequência')
