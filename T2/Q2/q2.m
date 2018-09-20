@@ -6,6 +6,7 @@ bits = 2;
 %codigo polar
 Rb = 200e3;
 chips_amostras = 50;
+amostras_bits = chips_amostras*N;
 Tb = 1/Rb;
 Tc = Rb/N;
 SNR = 100;%sem ruido
@@ -117,4 +118,23 @@ subplot(414);
 plot(t,y4_t,'k');
 title('y4(t)');
 %integral e correlator
+%y1
+int1 = sum(y1_t(1:length(y1_t)/2))/amostras_bits;
+int1_2 = sum(y1_t(length(y1_t)/2+1:end))/amostras_bits;
+correlator1 = [int1 > 0 int1_2 > 0];
+%y2
+int2 = sum(y2_t(1:length(y2_t)/2))/amostras_bits;
+int2_2 = sum(y2_t(length(y2_t)/2+1:end))/amostras_bits;
+correlator2 = [int2 > 0 int2_2 > 0];
+
+%y3
+int3 = sum(y3_t(1:length(y3_t)/2))/amostras_bits;
+int3_2 = sum(y3_t(length(y3_t)/2+1:end))/amostras_bits;
+correlator3 = [int3 > 0 int3_2 > 0];
+
+%y4
+int4 = sum(y4_t(1:length(y4_t)/2))/amostras_bits;
+int4_2 = sum(y4_t(length(y4_t)/2+1:end))/amostras_bits;
+correlator4 = [int4 > 0 int4_2 > 0];
+
 
