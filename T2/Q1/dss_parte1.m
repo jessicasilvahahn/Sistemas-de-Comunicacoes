@@ -1,9 +1,6 @@
-%fazer superamostragem 
+
 %c(t) = codigo
 %x(t) = info
-%s = tamanho 100000
-%t = [0,Tb) com um milhão de pontos
-%f = [-fa/2,fa/2]
 clear all;
 close all;
 Nb = 800; % Numero de bits transmitidos

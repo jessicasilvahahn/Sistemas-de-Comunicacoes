@@ -137,4 +137,17 @@ int4 = sum(y4_t(1:length(y4_t)/2))/amostras_bits;
 int4_2 = sum(y4_t(length(y4_t)/2+1:end))/amostras_bits;
 correlator4 = [int4 > 0 int4_2 > 0];
 
+figure();
+subplot(411);
+stem(correlator1,'r')
+ylim([0 1.2]);
+subplot(412);
+stem(correlator2)
+ylim([0 1.2]);
+subplot(413);
+stem(correlator3,'k')
+ylim([0 1.2]);
+subplot(414);
+stem(correlator4,'g')
+ylim([0 1.2]);
 

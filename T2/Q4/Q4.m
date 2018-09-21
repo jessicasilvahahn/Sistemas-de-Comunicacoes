@@ -1,6 +1,6 @@
-taps = [1 3]; 
+taps = [1 3]; %?
 estado = [1 0 0 ]; %nao pode ser [0 0 0] %estado inicial
-m = 7; % número de bits de estado
+m = 7; % número de bits de estado ?
 
 objetoLFSR = LFSR;
 %geracao de codigo, lembrando que o codigo é ciclico
