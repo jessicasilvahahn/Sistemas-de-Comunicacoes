@@ -23,7 +23,6 @@ x3_rep = kron(user2,ones([1,L]));
 x4_rep = kron(user3,ones([1,L]));
 
 %codigos
-%perguntar
 codigo1 = repmat(codigo(1,:),1,2); %pegar a linha correspondente
 codigo2 = repmat(codigo(2,:),1,2);
 codigo3 = repmat(codigo(3,:),1,2);
