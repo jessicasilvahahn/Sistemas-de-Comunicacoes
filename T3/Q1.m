@@ -1,3 +1,13 @@
-G = [1 0 1; 1 1 1]
-u = [1 1]
-codigo  = mod(u*G,2)
+clear all;
+close all;
+n = 7
+codigo.k = 4;
+codigo.G = [1 0 0 0 1 1 0; 0 1 0 0 1 0 1; 0 0 1 0 0 1 1; 0 0 0 1 1 1 1];
+codigo.lut = [0 0 0 0 0 0 0 0 0 0; 0 0 1 0 0 0 0 0 0 1; 0 1 0 0 0 0 0 0 1 0; 
+    1 0 0 0 0 0 0 1 0 0; 1 1 1 0 0 0 1 0 0 0; 0 1 1 0 1 0 0 0 0 0;
+    1 1 0 1 0 0 0 0 0 0];
+
+codigo.h = [1 1 0 1 1 0 0; 1 0 1 1 0 1 0; 0 1 1 1 0 0 1];
+objeto_sindrome = Sindrome;
+b = randi([0 1],1,n)
+u = objeto_sindrome.HDD(b,codigo)
