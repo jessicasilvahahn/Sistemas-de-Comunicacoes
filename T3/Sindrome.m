@@ -18,3 +18,12 @@ function [u_hat] = HDD(b,struct_info)
        end
     end
 end
+
+function [u_hat] = SDD(r,struct_info)
+    c = struct_info.c;
+    k = struct_info.k
+    dist = r * c';
+    [M, index] = max(dist);
+    c_hat = (c(index,:)+1)/2;
+    u_hat = c_hat(1:k)
+end
