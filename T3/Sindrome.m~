@@ -20,19 +20,37 @@ function [u_hat] = HDD(b,struct_info)
     end
 end
 
-function [u_hat] = SDD(r,struct_info,n)
+function [u_hat] = SDD(r,struct_info,)
     c = struct_info.c;
     c_mod = (c * 2) -1;
     k = struct_info.k;
+    u_hat = 0
+    c_mod = struct_info.c_mod';
     for i = 1:length(c)
         %distancia euclidiana
-        r = repmat(r(i, 1:end), size(c_mod, 1), 1);
         distancia = sum((c_mod - r).^2, 2);
         [valor_min indice] = min(distancia);
-        c_hat(i, 1:n) = c_mod(indice, :);
+        c_hat(i, 1:code.n) = code.c(indice, :);
     end
-    u_hat = c_hat(1:end, 1:k);
+    dists = r * c_mod';
+    [M, index] = max(dists);
+    c_estimado = c(index,:);
+    u_hat = c_estimado(1:k);
    
 end
 
 
+% function [u_hat] = SDD_Q3(r,struct_info)
+%     c = struct_info.c;
+%     k = struct_info.k;
+%     dist = r * c';
+%     maximo = max(multi);
+% 
+%     for i = 1:length(codigo.c)
+%          if (multi(i) == maximo);
+%              c_hat = codigo.c(i,:) >0;
+%              break;
+%          end
+%     end
+%    u_hat = c_hat(1:codigo.k);
+% end

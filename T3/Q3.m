@@ -1,6 +1,7 @@
 clear all;
 close all;
-N = 10000;
+N = 1000;
+%arrumar Q2
 %codigo de Goley
 codigo_goley.k = 12;
 n_goley = 23;
@@ -101,15 +102,15 @@ objeto_sindrome = Sindrome;
     ruido = randn(length(b_goley_mod),n_goley).*sqrt(aux/2);
     goley_awgn = b_goley_mod + ruido; 
     y_goley  = goley_awgn > 0;
+ 
     
-    for i = 1:length(y_goley);
+    for i = 1:1:length(b_goley_mod)
        u_hat_hdd_goley(i,:) = objeto_sindrome.HDD(y_goley(i,:),codigo_goley);
-       u_hat_sdd_goley(i,:) = objeto_sindrome.SDD(y_goley(i,:),codigo_goley);
-       u_hat_sdd_goley2 = u_hat_sdd_goley > 0;
-        
-    end;
-    [num_hdd_hat_goley(Eb+2), taxa_goley_hdd(Eb+2)] = biterr(b_goley,u_hat_hdd_goley);
-    [num_sdd_hat_goley(Eb+2), taxa_goley_sdd(Eb+2)] = biterr(b_goley,u_hat_sdd_goley2);
+       u_hat_sdd_goley = objeto_sindrome.SDD(goley_awgn,codigo_goley,n_goley); 
+    end
+    
+    [num_hdd_hat_goley(Eb+2), taxa_goley_hdd(Eb+2)] = biterr(u_goley,u_hat_hdd_goley);
+    [num_sdd_hat_goley(Eb+2), taxa_goley_sdd(Eb+2)] = biterr(u_goley,u_hat_sdd_goley);
      
     aux_hamming =  Eb_aux_hamming/10^(Eb/10); 
     ruido_hamming = randn(length(b_hamming_mod),n_hamming).*sqrt(aux_hamming/2);
@@ -118,7 +119,7 @@ objeto_sindrome = Sindrome;
     
      for i = 1:length(y_hamming);
        u_hat_hamming = objeto_sindrome.HDD(y_hamming(i,:),codigo_hamming);
-       u_hat_hamming2 = objeto_sindrome.SDD(y_hamming(i,:),codigo_hamming);
+       u_hat_hamming2 = objeto_sindrome.SDD(y_hamming,codigo_hamming,n_hamming);
        if(u_hat_hamming==0)
        else
         u_hat_hdd_hamming(i,:) = u_hat_hamming;
@@ -129,7 +130,7 @@ objeto_sindrome = Sindrome;
        end
         
     end; 
-    u_hat_sdd_hamming2 = u_hat_sdd_hamming > 0;
+  
     [num_hdd_hat_hamming(Eb+2), taxa_hamming_hdd(Eb+2)] = biterr(b_hamming,u_hat_hdd_hamming);
     [num_sdd_hat_hamming(Eb+2), taxa_hamming_sdd(Eb+2)] = biterr(b_hamming,u_hat_sdd_hamming2);
 end;
