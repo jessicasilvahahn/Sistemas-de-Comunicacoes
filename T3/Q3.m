@@ -1,6 +1,6 @@
 clear all;
 close all;
-N = 1000;
+N = 100000;
 %arrumar Q2
 %codigo de Goley
 codigo_goley.k = 12;
@@ -104,13 +104,10 @@ objeto_sindrome = Sindrome;
     y_goley  = goley_awgn > 0;
  
     
-    for i = 1:1:length(b_goley_mod)
+   for i = 1:length(y_goley);
        u_hat_hdd_goley(i,:) = objeto_sindrome.HDD(y_goley(i,:),codigo_goley);
-       u_hat_sdd_goley = objeto_sindrome.SDD(goley_awgn,codigo_goley,n_goley); 
-    end
-    
-    [num_hdd_hat_goley(Eb+2), taxa_goley_hdd(Eb+2)] = biterr(u_goley,u_hat_hdd_goley);
-    [num_sdd_hat_goley(Eb+2), taxa_goley_sdd(Eb+2)] = biterr(u_goley,u_hat_sdd_goley);
+   end
+   [num_hdd_hat_goley(Eb+2), taxa_goley_hdd(Eb+2)] = biterr(b_goley,u_hat_hdd_goley);
      
     aux_hamming =  Eb_aux_hamming/10^(Eb/10); 
     ruido_hamming = randn(length(b_hamming_mod),n_hamming).*sqrt(aux_hamming/2);
@@ -119,20 +116,15 @@ objeto_sindrome = Sindrome;
     
      for i = 1:length(y_hamming);
        u_hat_hamming = objeto_sindrome.HDD(y_hamming(i,:),codigo_hamming);
-       u_hat_hamming2 = objeto_sindrome.SDD(y_hamming,codigo_hamming,n_hamming);
        if(u_hat_hamming==0)
        else
         u_hat_hdd_hamming(i,:) = u_hat_hamming;
        end;
-       if(u_hat_hamming2==0)
-       else
-        u_hat_sdd_hamming(i,:) = u_hat_hamming2;
-       end
         
     end; 
   
-    [num_hdd_hat_hamming(Eb+2), taxa_hamming_hdd(Eb+2)] = biterr(b_hamming,u_hat_hdd_hamming);
-    [num_sdd_hat_hamming(Eb+2), taxa_hamming_sdd(Eb+2)] = biterr(b_hamming,u_hat_sdd_hamming2);
+  [num_hdd_hat_hamming(Eb+2), taxa_hamming_hdd(Eb+2)] = biterr(b_hamming,u_hat_hdd_hamming);
+
 end;
 
 %teorico
@@ -160,15 +152,23 @@ for Eb = [-1:7]
 end
 
 %HDD 
+
+%HDD 
 figure();
 semilogy([-1:7],taxa_goley_hdd);
 hold on;
 semilogy([-1:7],taxa_hamming_hdd); 
+legend('HDD Simulado Goley','HDD Simulado Hamming')
+title('Desempenho do Sistema HDD');
+ylabel('Probabilidade de erro (Pb)');
+xlabel('dB');
+hold off;
+
+figure();
 semilogy([-1:7],Pc_HDD_goley);
-semilogy([-1:7],Pc_HDD_goley/codigo_goley.k);
+hold on;
 semilogy([-1:7],Pc_HDD_hamming);
-semilogy([-1:7],Pc_HDD_hamming/codigo_hamming.k);
-legend('HDD Goley','HDD Hamming','HDD Goley Superior','HDD Goley Inferior','HDD Hamming Superior','HDD Hamming Inferior')
+legend('HDD Teórico Goley','HDD Teórico Hamming')
 title('Desempenho do Sistema HDD');
 ylabel('Probabilidade de erro (Pb)');
 xlabel('dB');
@@ -176,26 +176,13 @@ hold off;
 
 %SDD
 figure();
-semilogy([-1:7],taxa_goley_sdd);
-hold on;
-semilogy([-1:7],taxa_hamming_sdd); 
 semilogy([-1:7],Pc_SDD_goley);
-semilogy([-1:7],Pc_HDD_hamming);
-legend('SDD Goley','SDD Hamming','SDD Goley Superior','SDD Hamming Superior')
+hold on;
+semilogy([-1:7],Pc_SDD_hamming);
+legend('SDD Goley Teórico','SDD Teórico Hamming')
 title('Desempenho do Sistema HDD');
 ylabel('Probabilidade de erro (Pb)');
 xlabel('dB');
 hold off;
 
-figure();
-semilogy([-1:7],taxa_goley_sdd);
-hold on;
-semilogy([-1:7],taxa_hamming_sdd); 
-semilogy([-1:7],taxa_goley_hdd);
-semilogy([-1:7],taxa_hamming_hdd);
-semilogy([-1:7],Pc_not_cod);
-legend('SDD Goley','SDD Hamming','HDD Goley','HDD Hamming','Desempenho Polar')
-title('HDD vs SDD');
-ylabel('Probabilidade de erro (Pb)');
-xlabel('dB');
-hold off;
+
